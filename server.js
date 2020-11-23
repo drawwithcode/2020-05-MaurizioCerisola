@@ -1,11 +1,18 @@
-console.log("node is running")
+console.log("node is running");
 
+
+<<<<<<< HEAD
 //Start the server
 let express = require("express"); //laod express
 let socket = require("socket.io"); //load socket.io
+=======
+let express = require("express"); //laod the piece of code called "express" and place it in the variable express
+//let socket = require("socket.io");
+>>>>>>> parent of ff876fb... Restored last node project
 let app = express(); //execute express
 let port = 3000;
 let server = app.listen(port); //start the server
+<<<<<<< HEAD
 //Set up express
 app.use(express.static("public")); //we are saying to express to use the folder "public"
 //Set up socket.io
@@ -36,3 +43,7 @@ function newConnection(socket) {
    }
    return color;
  }
+=======
+
+app.use(express.static("public")); //we are saying to express to use the folder "public"
+>>>>>>> parent of ff876fb... Restored last node project

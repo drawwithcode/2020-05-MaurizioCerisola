@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 let socket = io(); //we are loading socket.io
 let myColor = "white";
 let windowDiagonal = pow(pow(windowHeight,2)+pow(windowWidth,2), 0.5);
@@ -25,6 +26,8 @@ function setColor(assignedColor){
 
 
 
+=======
+>>>>>>> parent of ff876fb... Restored last node project
 function preload(){
   // put preload code here
 }
@@ -32,12 +35,13 @@ function preload(){
 function setup() {
   createCanvas(windowWidth,windowHeight)
   // put setup code here
-  background("purple");
 }
 
 function draw() {
+  background("purple");
   // put drawing code here
 }
+<<<<<<< HEAD
 
 function mouseMoved() {
   push();
@@ -57,3 +61,5 @@ function mouseMoved() {
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
+=======
+>>>>>>> parent of ff876fb... Restored last node project
