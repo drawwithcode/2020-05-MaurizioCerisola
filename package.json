@@ -1,0 +1,23 @@
+{
+  "name": "2020-05-mauriziocerisola",
+  "version": "1.0.0",
+  "description": "assignment number 5",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drawwithcode/2020-05-MaurizioCerisola.git"
+  },
+  "author": "maurizio cerisola",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drawwithcode/2020-05-MaurizioCerisola/issues"
+  },
+  "homepage": "https://github.com/drawwithcode/2020-05-MaurizioCerisola#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

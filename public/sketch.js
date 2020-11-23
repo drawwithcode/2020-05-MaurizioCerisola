@@ -8,5 +8,6 @@ function setup() {
 }
 
 function draw() {
+  background("purple");
   // put drawing code here
 }
