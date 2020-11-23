@@ -9,20 +9,30 @@ let server = app.listen(port); //start the server
 app.use(express.static("public")); //we are saying to express to use the folder "public"
 let io = socket(server); //we enable the server to receive and send messages to the clients
 
-//a message is standardized and is called "event". Every event has a name and an action associated
-io.on("connection", newConnection); //when there is a message called "connection" execute a function called "newConnection"
+
+let ids = [];
+let colors =[];
+
+
+io.on("connection", newConnection);
 
 function newConnection(socket) {
-  console.log("new connection: " + socket.client.id); //_socket.client.id by default contains the ip adress of the new connection
+  console.log("new connection: " + socket.client.id);
+  socket.emit("yourId", socket.client.id);
+  ids.push(socket.client.id);
+  io.emit("clientsIds", ids);
+
+
 
   let clientColor = getRandomColor();
-  socket.emit("color", clientColor);
+  colors.push(clientColor);
+  io.emit("clientsColors", colors);
 
-  socket.on("mouse", mouseMessage); //for each client, if you get any connection called "mouse", execute "mouseMessage"
-  // mouse is a customized name, we can name it how we want
+  socket.on("mouse", mouseMessage);
+
   function mouseMessage(dataReceived){
-    console.log(socket.client.id, dataReceived);
-    socket.broadcast.emit("mouseBroadcast", dataReceived); //broadcast this information to everyone except from the one who sent it
+    //console.log(socket.client.id, dataReceived);
+    io.emit("mouseBroadcast", dataReceived); //broadcast this information to everyone except from the one who sent it
   }
 }
 
