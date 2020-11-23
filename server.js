@@ -1,21 +1,23 @@
 console.log("node is running")
 
-let express = require("express"); //laod the piece of code called "express" and place it in the variable express
-let socket = require("socket.io");
+//Start the server
+let express = require("express"); //laod express
+let socket = require("socket.io"); //load socket.io
 let app = express(); //execute express
-let port = 3000; //standard number, this is the port we will use for our project
+let port = 3000;
 let server = app.listen(port); //start the server
-//the 4 lines above allows you to create your local server
+//Set up express
 app.use(express.static("public")); //we are saying to express to use the folder "public"
+//Set up socket.io
 let io = socket(server); //we enable the server to receive and send messages to the clients
 
-//a message is standardized and is called "event". Every event has a name and an action associated
+//Event: New connection
 io.on("connection", newConnection); //when there is a message called "connection" execute a function called "newConnection"
 
 function newConnection(socket) {
-  console.log("new connection: " + socket.client.id); //_socket.client.id by default contains the ip adress of the new connection
+  console.log("new connection: " + socket.client.id); //socket.client.id by default contains the ip adress of the new connection
 
-  let clientColor = getRandomColor();
+  let clientColor = getRandomColor(); //get a random color for the new connection
   socket.emit("color", clientColor);
 
   socket.on("mouse", mouseMessage); //for each client, if you get any connection called "mouse", execute "mouseMessage"
