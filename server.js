@@ -1,11 +1,11 @@
 console.log("node is running")
 
-let express = require("express"); //laod the piece of code called "express" and place it in the variable express
-let socket = require("socket.io");
+//Set Up
+let express = require("express"); //laod express
+let socket = require("socket.io"); //load socket.io
 let app = express(); //execute express
-let port = 3000; //standard number, this is the port we will use for our project
+let port = 3000;
 let server = app.listen(port); //start the server
-//the 4 lines above allows you to create your local server
 app.use(express.static("public")); //we are saying to express to use the folder "public"
 let io = socket(server); //we enable the server to receive and send messages to the clients
 
