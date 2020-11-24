@@ -123,7 +123,7 @@ function draw() {
   textAlign(CENTER);
   fill("white");
   textFont("Comic Sans MS");
-  text("Follow the other players to create a permanent pattern!", windowWidth/2, windowHeight/8);
+  text("Join forces to create a permanent pattern!", windowWidth/2, windowHeight/8);
   pop();
 }
 
