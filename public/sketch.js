@@ -60,6 +60,9 @@ function manageDisconnection(index) {
 }
 function drawMouse(data){
   background(backgroundColor);
+  //map movements
+  let x = map(data.x,0,1,0,windowWidth);
+  let y = map(data.y,0,1,0,windowHeight);
   //Search index
   let index;
   for(let i=0; i<ids.length; i++) {
@@ -72,8 +75,8 @@ function drawMouse(data){
   for(let i=0; i<ids.length; i++) {
     if (data.id!=ids[i]){
       for(let j=0; j<oldMouseXs[i].length; j++) {
-        let distance_data_oldMouse = pow(pow(data.x-oldMouseXs[i][j],2)+pow(data.y-oldMouseYs[i][j],2),0.5);
-        let distance_data_lastOverlap = pow(pow(data.x-overlapX[0],2)+pow(data.y-overlapY[0],2),0.5);
+        let distance_data_oldMouse = pow(pow(x-oldMouseXs[i][j],2)+pow(y-oldMouseYs[i][j],2),0.5);
+        let distance_data_lastOverlap = pow(pow(x-overlapX[0],2)+pow(y-overlapY[0],2),0.5);
         if (distance_data_oldMouse<ellipseDiameter/2 && distance_data_lastOverlap>ellipseDiameter/2) {
           overlap=true;
           //remove that point from the array so that it will not be displayed
@@ -81,16 +84,16 @@ function drawMouse(data){
           oldMouseYs[i].splice(j,1);
           let c = lerpColor(color(colors[index]),color(colors[i]),0.5);
           overlapColor.unshift(c);
-          overlapX.unshift(data.x);
-          overlapY.unshift(data.y);
+          overlapX.unshift(x);
+          overlapY.unshift(y);
         }
       }
     }
   }
   //Add latest mouse position
   if(!overlap) {
-    oldMouseXs[index].unshift(data.x);
-    oldMouseYs[index].unshift(data.y);
+    oldMouseXs[index].unshift(x);
+    oldMouseYs[index].unshift(y);
   }
   //Draw ellipses
   for(let i=0; i<ids.length; i++) {
@@ -147,10 +150,12 @@ function draw() {
 
 function mouseMoved() {
   //create the message (as an object)
+  let x = map(mouseX,0,windowWidth,0,1);
+  let y = map(mouseY,0,windowHeight,0,1);
   let message = {
     id: id,
-    x: mouseX,
-    y: mouseY,
+    x: x,
+    y: y,
   };
   //send the message
   socket.emit("mouse", message);
