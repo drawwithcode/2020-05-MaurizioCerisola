@@ -4,7 +4,7 @@ console.log("node is running")
 let express = require("express"); //laod express
 let socket = require("socket.io"); //load socket.io
 let app = express(); //execute express
-let port = 3000;
+let port = process.env.PORT || 3000;
 let server = app.listen(port); //start the server
 app.use(express.static("public")); //we are saying to express to use the folder "public"
 let io = socket(server); //we enable the server to receive and send messages to the clients
