@@ -8,20 +8,21 @@ let ids=[];
 let colors=[];
 let oldMouseXs = [[]];
 let oldMouseYs = [[]];
-let overlapX = [];
-let overlapY = [];
-let overlapColor = [];
+let overlapX = [0];
+let overlapY = [0];
+let overlapColor = [backgroundColor];
 
 socket.on("yourId", setId);
 socket.on("clientsIds", setIds);
-socket.on("mouseBroadcast", drawMouse);
 socket.on("clientsColors", setColors);
+socket.on("clientDisconnection", manageDisconnection);
+socket.on("mouseBroadcast", drawMouse);
+
 
 
 function setId(serverId) {
   id=serverId;
 }
-
 function setIds(serverIds) {
   ids = serverIds;
   while (oldMouseXs.length<ids.length) {
@@ -29,7 +30,34 @@ function setIds(serverIds) {
       oldMouseYs.push([0]);
   }
 }
-
+function setColors(serverColors){
+  colors=serverColors;
+}
+function manageDisconnection(index) {
+  //update data structures
+  ids.splice(index,1);
+  colors.splice(index,1);
+  oldMouseXs.splice(index,1);
+  oldMouseYs.splice(index,1);
+  //draw()
+  background(backgroundColor);
+  //Draw ellipses
+  for(let i=0; i<ids.length; i++) {
+    push();
+    fill(colors[i]);
+    for(let j=0; j<oldMouseXs[i].length; j++) {
+      ellipse(oldMouseXs[i][j], oldMouseYs[i][j], ellipseDiameter);
+    }
+    pop();
+  }
+  //Draw overlaps
+  for(let i=0; i<overlapX.length; i++){
+    push();
+    fill(overlapColor[i]);
+    star(overlapX[i], overlapY[i], ellipseDiameter/7*3/2, ellipseDiameter/2, 5);
+    pop();
+  }
+}
 function drawMouse(data){
   background(backgroundColor);
   //Search index
@@ -93,31 +121,20 @@ function drawMouse(data){
   }
 }
 
-function setColors(serverColors){
-  colors=serverColors;
-}
-
-
-
 
 function preload(){
   // put preload code here
 }
-
 function setup() {
   createCanvas(windowWidth,windowHeight);
+  background(backgroundColor);
   noStroke();
+  //initialize parameters
   windowDiagonal = pow(pow(windowHeight,2)+pow(windowWidth,2),0.5);
   ellipseDiameter = windowDiagonal/40;
-  //initialize overlaps ouside the canvas
-  overlapX.push(-ellipseDiameter*2);
-  overlapY.push(-ellipseDiameter*2);
-  overlapColor.push(backgroundColor);
-
-  background(backgroundColor);
 }
-
 function draw() {
+  // write instructions
   push();
   textSize(windowDiagonal/50);
   textAlign(CENTER);
@@ -126,8 +143,6 @@ function draw() {
   text("Join forces to create a permanent pattern!", windowWidth/2, windowHeight/8);
   pop();
 }
-
-
 
 
 function mouseMoved() {
@@ -140,7 +155,6 @@ function mouseMoved() {
   //send the message
   socket.emit("mouse", message);
 }
-
 // references: https://p5js.org/examples/form-star.html
 function star(x, y, radius1, radius2, npoints) {
   let angle = TWO_PI / npoints;
@@ -156,7 +170,6 @@ function star(x, y, radius1, radius2, npoints) {
   }
   endShape(CLOSE);
 }
-
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }

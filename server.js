@@ -18,22 +18,39 @@ io.on("connection", newConnection);
 
 function newConnection(socket) {
   console.log("new connection: " + socket.client.id);
+
+  //ids
   socket.emit("yourId", socket.client.id);
   ids.push(socket.client.id);
   io.emit("clientsIds", ids);
 
-
-
+  //colors
   let clientColor = getRandomColor();
   colors.push(clientColor);
   io.emit("clientsColors", colors);
 
-  socket.on("mouse", mouseMessage);
+  //disconnection
+  socket.on('disconnect', function () {
+    console.log("disconnection: "+ socket.client.id);
+    //Search index
+    let index;
+    for(let i=0; i<ids.length; i++) {
+      if(ids[i]==socket.client.id) {
+        index=i;
+      }
+    }
+    //update ids and colors
+    ids.splice(index,1);
+    colors.splice(index,1);
+    //broadcast updates
+    io.emit("clientDisconnection", index);
+  });
 
-  function mouseMessage(dataReceived){
-    //console.log(socket.client.id, dataReceived);
-    io.emit("mouseBroadcast", dataReceived); //broadcast this information to everyone except from the one who sent it
-  }
+  //mouse
+  socket.on("mouse", function (dataReceived){
+    io.emit("mouseBroadcast", dataReceived);
+  });
+
 }
 
  function getRandomColor() {
